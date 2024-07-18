@@ -1,5 +1,17 @@
+import { Header } from "@/components/Header";
+import { HealthUnit } from "@/components/HealthUnit";
+import { Flex } from "@chakra-ui/react";
+
 export default function Home() {
   return (
-    <h1>Hello World, Care Connect!</h1>
+    <>
+      <Header />
+      <Flex width="full" justifyContent={"center"} flexDirection={"column"}>
+        <HealthUnit />
+        <HealthUnit />
+        <HealthUnit />
+        <HealthUnit />
+      </Flex>
+    </>
   );
 }
