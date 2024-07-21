@@ -18,6 +18,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { differenceInDays } from "date-fns";
@@ -50,11 +51,11 @@ const MotionButton = motion(Button);
 const buttonVariants = {
   unchecked: {
     scale: 1,
-    transition: { type: 'spring', stiffness: 300 },
+    transition: { type: "spring", stiffness: 300 },
   },
   checked: {
     scale: 1.05,
-    transition: { type: 'spring', stiffness: 300 },
+    transition: { type: "spring", stiffness: 300 },
   },
 };
 
@@ -69,8 +70,7 @@ export function HospitalJobModalApply({
 
   const [selectedShifts, setSelectedShifts] = useState(selectShiftsIds);
 
-  const router = useRouter();
-
+  const toast = useToast();
   const { data: session } = useSession();
 
   function toggleSelectedShift(shiftId: number) {
@@ -88,7 +88,6 @@ export function HospitalJobModalApply({
   }
 
   async function handleApply() {
-    console.log("Pressionado");
     const response = await post(
       `/hospital-jobs/${hospitalJob.id}/candidacies`,
       {
@@ -97,11 +96,21 @@ export function HospitalJobModalApply({
     );
 
     if (response.ok) {
-      console.log("Sucesso!");
+      toast({
+        position: "top",
+        title: "Parabéns!",
+        description: "Sua candidatura foi enviada com sucesso!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }
 
-  const daysPassed = differenceInDays(new Date(), new Date(hospitalJob.createdAt));
+  const daysPassed = differenceInDays(
+    new Date(),
+    new Date(hospitalJob.createdAt)
+  );
 
   return (
     <Modal
@@ -154,7 +163,9 @@ export function HospitalJobModalApply({
 
               <ListItem color="gray.500">
                 <ListIcon w={5} h={5} as={Calendar} color="blueX.900" />
-                {daysPassed === 0 ? "Postado hoje" : `Postado há ${daysPassed} dias`}
+                {daysPassed === 0
+                  ? "Postado hoje"
+                  : `Postado há ${daysPassed} dias`}
               </ListItem>
               <ListItem color="gray.500">
                 <ListIcon w={5} h={5} as={HandCoins} color="blueX.900" />
@@ -168,24 +179,6 @@ export function HospitalJobModalApply({
                 const formattedFinishHour = formatTime(shift.finishHour);
 
                 return (
-                  // <Button
-                  //   as={motion.div}
-                  //   transition="0.5s linear"
-                  //   cursor={"pointer"}
-                  //   key={shift.id}
-                  //   variant={isSelected(shift.id) ? "outline" : "solid"}
-                  //   colorScheme={isSelected(shift.id) ? "blue" : "gray"}
-                  //   size={"sm"}
-                  //   leftIcon={
-                  //     isSelected(shift.id) ? (
-                  //       <CircleCheckBig size={"14"} />
-                  //     ) : undefined
-                  //   }
-                  //   onClick={() => toggleSelectedShift(shift.id)}
-                  // >
-                  //   {shift.shift} - {formattedInitialHour} até às {formattedFinishHour}
-
-                  // </Button>
                   <MotionButton
                     transition="0.5s linear"
                     cursor="pointer"
@@ -200,9 +193,10 @@ export function HospitalJobModalApply({
                     }
                     onClick={() => toggleSelectedShift(shift.id)}
                     variants={buttonVariants}
-                    animate={isSelected(shift.id) ? 'checked' : 'unchecked'}
+                    animate={isSelected(shift.id) ? "checked" : "unchecked"}
                   >
-                    {shift.shift} - {formattedInitialHour} até às {formattedFinishHour}
+                    {shift.shift} - {formattedInitialHour} até às{" "}
+                    {formattedFinishHour}
                   </MotionButton>
                 );
               })}
