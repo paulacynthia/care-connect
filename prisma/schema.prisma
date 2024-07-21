@@ -58,7 +58,7 @@ model Shift {
 
   hospitalJobId Int
 
-  hospitalJobShifts  HospitalJob          @relation(fields: [hospitalJobId], references: [id])
+  hospitalJobShift   HospitalJob          @relation(fields: [hospitalJobId], references: [id])
   userShiftCandidacy UserShiftCandidacy[]
 
   @@map("shifts")
