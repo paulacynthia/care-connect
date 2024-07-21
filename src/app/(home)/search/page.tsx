@@ -32,7 +32,6 @@ export default async function Search({ searchParams }: SearchProps) {
             `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
-  console.log("searchParams", queryString);
 
   if (!queryString) return redirect("/");
 

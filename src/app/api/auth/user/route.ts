@@ -36,9 +36,6 @@ const updateUserSchema = yup.object({
 });
 
 export async function GET() {
-  console.log("Running! 🎊");
-  // console.log(request.nextUrl.searchParams);
-
   try {
     const data = await prisma.user.findMany({
       select: {
@@ -65,11 +62,10 @@ export async function POST(request: NextRequest) {
   const body: User = await request.json();
 
   try {
-   const token = getToken({
+    const token = getToken({
       req: request,
     });
-    console.log("token", token);
-    
+
     await createUserSchema.validate(body);
     const { name, email, password } = body;
 

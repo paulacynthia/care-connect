@@ -16,8 +16,6 @@ export function HeaderClient() {
   const { isOpen, onToggle } = useDisclosure();
   const { data: session } = useSession();
 
-  console.log("session", { session });
-
   return (
     <>
       <Flex display={{ base: "none", md: "flex" }} align="center">
@@ -52,52 +50,57 @@ export function HeaderClient() {
         </Stack>
       </Flex>
 
-    <Flex display={{ base: "flex", md: "none" }} direction="row-reverse" alignItems="center" >
-      {session && (<Avatar
-                name={session.user?.name || "Eu"}
-                size={"sm"}
-                bgColor="blueX.500"
-                color="white"/>)}
-      <IconButton
-        onClick={onToggle}
-        justifyContent="center"
-        icon={isOpen ? <X /> : <Menu />}
-        variant={"ghost"}
-        aria-label={"Toggle Navigation"}
-      />
-      
-                
-      <Collapse in={isOpen} animateOpacity>
-        <Flex
-          width="full"
-          direction="column"
-          alignItems="flex-start"
-          bg="white"
-          gap="1rem"
-        >
-          {session ? (
-            <Button
-              onClick={() => signOut()}
-              variant="link"
-              fontSize="sm"
-              fontWeight={400}
-            >
-              Sair
-            </Button>
-          ) : (
-            <Button
-              onClick={() => signIn()}
-              variant="link"
-              fontSize="sm"
-              fontWeight={400}
-            >
-              Entrar
-            </Button>
-          )}
-        </Flex>
-      </Collapse>
-      </Flex>
+      <Flex
+        display={{ base: "flex", md: "none" }}
+        direction="row-reverse"
+        alignItems="center"
+      >
+        {session && (
+          <Avatar
+            name={session.user?.name || "Eu"}
+            size={"sm"}
+            bgColor="blueX.500"
+            color="white"
+          />
+        )}
+        <IconButton
+          onClick={onToggle}
+          justifyContent="center"
+          icon={isOpen ? <X /> : <Menu />}
+          variant={"ghost"}
+          aria-label={"Toggle Navigation"}
+        />
 
+        <Collapse in={isOpen} animateOpacity>
+          <Flex
+            width="full"
+            direction="column"
+            alignItems="flex-start"
+            bg="white"
+            gap="1rem"
+          >
+            {session ? (
+              <Button
+                onClick={() => signOut()}
+                variant="link"
+                fontSize="sm"
+                fontWeight={400}
+              >
+                Sair
+              </Button>
+            ) : (
+              <Button
+                onClick={() => signIn()}
+                variant="link"
+                fontSize="sm"
+                fontWeight={400}
+              >
+                Entrar
+              </Button>
+            )}
+          </Flex>
+        </Collapse>
+      </Flex>
     </>
   );
 }

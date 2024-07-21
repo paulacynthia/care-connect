@@ -16,7 +16,6 @@ export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req });
     const userId = Number(token?.sub);
-    console.log("userId", userId);
 
     const { searchParams } = req.nextUrl;
     const query = searchParams.get("q") || "";

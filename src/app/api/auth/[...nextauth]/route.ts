@@ -27,8 +27,6 @@ const authOptions: NextAuthOptions = {
           user.password
         );
 
-        console.log("passwordCorrect", { passwordCorrect });
-
         if (passwordCorrect) {
           return {
             id: user.id.toString(),
