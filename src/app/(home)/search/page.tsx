@@ -15,8 +15,9 @@ interface SearchParams {
 }
 
 async function getHospitalJobs(query: string = "") {
+  const headersConfig = new Headers(headers());
   const apiURL = `/hospital-jobs${query}`;
-  const response = await api(apiURL, headers());
+  const response = await api(apiURL, headersConfig);
 
   const hospitalJobs: ApiResponse<HospitalJob[]> = await response.json();
   return hospitalJobs.data;

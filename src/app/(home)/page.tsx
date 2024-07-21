@@ -6,7 +6,8 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 
 async function getHospitalJobs() {
-  const response = await api("/hospital-jobs", headers());
+  const headersConfig = new Headers(headers());
+  const response = await api("/hospital-jobs", headersConfig);
 
   const hospitalJobs: ApiResponse<HospitalJob[]> = await response.json();
   return hospitalJobs.data;
