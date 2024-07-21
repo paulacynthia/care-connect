@@ -8,8 +8,8 @@ interface params {
   minimumScore: number;
   initialHour: number;
   finishHour: number;
-  sortBy: string;
-  sortOrder: "" | "asc" | "desc";
+  orderBy: string;
+  orderType: "" | "asc" | "desc";
 }
 
 export async function GET(req: NextRequest) {
@@ -46,9 +46,9 @@ export async function GET(req: NextRequest) {
       },
     };
 
-    const sortByParam = searchParams.get("sortBy") || "";
-    const orderBy = searchParams.get("sortBy") && {
-      [sortByParam]: searchParams.get("sortOrder") || "desc",
+    const orderByParam = searchParams.get("orderBy") || "";
+    const orderBy = searchParams.get("orderBy") && {
+      [orderByParam]: searchParams.get("orderType") || "desc",
     };
 
     const dbWhere = {
