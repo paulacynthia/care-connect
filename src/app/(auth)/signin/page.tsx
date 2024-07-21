@@ -12,7 +12,7 @@ export default function SignIn() {
           fontSize="3xl"
           fontWeight="bold"
           color="blueX.500"
-          textAlign={["center", "start"]}
+          textAlign="center"
         >
           Login
         </Text>

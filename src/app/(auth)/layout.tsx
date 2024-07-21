@@ -19,8 +19,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
-          padding={["2rem 4rem 2rem 4rem"]}
           gap="2rem"
+          padding="2rem"
         >
           {children}
         </Flex>
@@ -33,7 +33,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
-          padding={["2rem 4rem 2rem 4rem"]}
+          padding="2rem"
           gap="2rem"
         >
           <Flex maxWidth="300px">

@@ -10,13 +10,13 @@ export default function SignUp() {
           fontSize="3xl"
           fontWeight="bold"
           color="blueX.500"
-          textAlign={["center", "start"]}
+          textAlign="center"
         >
           Cadastro
         </Text>
 
         <Text fontSize="md" color="gray.500" textAlign={"center"}>
-          Faça seu cadastro e tenha acesso ...
+          Faça seu cadastro aqui!
         </Text>
       </Flex>
 
