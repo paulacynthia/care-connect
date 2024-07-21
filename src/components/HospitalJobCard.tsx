@@ -16,6 +16,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { differenceInDays } from "date-fns";
 import { ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { HospitalJobModalApply } from "./HealthModalApply";
@@ -33,6 +34,8 @@ export function HospitalJobCard({ hospitalJob }: HospitalJobCardProps) {
 
   const [selectedHospitalJob, setHealthUnitSelected] =
     useState<HospitalJob | null>(null);
+
+  const daysPassed = differenceInDays(new Date(), new Date(hospitalJob.createdAt));
 
   return (
     <>
@@ -52,7 +55,7 @@ export function HospitalJobCard({ hospitalJob }: HospitalJobCardProps) {
               color="white"
             />
             <Text fontSize={"12px"} color={"grayX.500"}>
-              5 dias atrás
+              {daysPassed === 0 ? "Publicada hoje" : `Publicada há ${daysPassed} dia${daysPassed > 1 && "s"}`}
             </Text>
           </Flex>
         </CardHeader>

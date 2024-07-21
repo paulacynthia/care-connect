@@ -2,6 +2,7 @@
 
 import { post } from "@/data/api";
 import { HospitalJob } from "@/data/types/hospitalJob";
+import { formatCurrency, formatTime } from "@/utils";
 import {
   Avatar,
   Button,
@@ -19,10 +20,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { differenceInDays } from "date-fns";
 import { motion } from "framer-motion";
 import {
   Calendar,
   CircleCheckBig,
+  HandCoins,
   MapPin,
   PiggyBank,
   Star,
@@ -42,6 +45,18 @@ interface HospitalJobModalApplyProps {
   onCloseModalApply: () => void;
   hospitalJob: HospitalJob;
 }
+
+const MotionButton = motion(Button);
+const buttonVariants = {
+  unchecked: {
+    scale: 1,
+    transition: { type: 'spring', stiffness: 300 },
+  },
+  checked: {
+    scale: 1.05,
+    transition: { type: 'spring', stiffness: 300 },
+  },
+};
 
 export function HospitalJobModalApply({
   hospitalJob,
@@ -86,10 +101,12 @@ export function HospitalJobModalApply({
     }
   }
 
+  const daysPassed = differenceInDays(new Date(), new Date(hospitalJob.createdAt));
+
   return (
     <Modal
       size="lg"
-      motionPreset="slideInBottom"
+      motionPreset="scale"
       isOpen={isOpenModalApply}
       onClose={onCloseModalApply}
     >
@@ -98,7 +115,7 @@ export function HospitalJobModalApply({
         <ModalHeader>{hospitalJob.title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex flexDirection={"column"} gap="2rem">
+          <Flex flexDirection={"column"} gap="1.5rem">
             <Flex gap="0.5rem">
               <Avatar
                 borderRadius={"md"}
@@ -114,8 +131,12 @@ export function HospitalJobModalApply({
                 </Text>
               </VStack>
             </Flex>
-
-            <List spacing={4} width="full" maxWidth={"20rem"}>
+            <VStack alignItems="flex-start">
+              <Text fontWeight={500}>Descrição da vaga:</Text>
+              <Text fontSize={14}>{hospitalJob.description}</Text>
+              <Text fontSize={14}>{hospitalJob.requirements}</Text>
+            </VStack>
+            <List spacing={2} width="full" maxWidth={"20rem"}>
               <ListItem alignItems={"center"} color="gray.500">
                 <ListIcon w={5} h={5} as={MapPin} color="blueX.900" />
                 {hospitalJob.hospital.location}
@@ -128,35 +149,61 @@ export function HospitalJobModalApply({
 
               <ListItem color="gray.500">
                 <ListIcon w={5} h={5} as={PiggyBank} color="blueX.900" />
-                {hospitalJob.payment} por hora
+                {formatCurrency(hospitalJob.payment)} por hora
               </ListItem>
 
               <ListItem color="gray.500">
                 <ListIcon w={5} h={5} as={Calendar} color="blueX.900" />
-                Postado há X dias
+                {daysPassed === 0 ? "Postado hoje" : `Postado há ${daysPassed} dias`}
+              </ListItem>
+              <ListItem color="gray.500">
+                <ListIcon w={5} h={5} as={HandCoins} color="blueX.900" />
+                {hospitalJob.benefits}
               </ListItem>
             </List>
 
             <Flex flexWrap={"wrap"} gap="0.5rem">
               {hospitalJob.availableShifts.map((shift) => {
+                const formattedInitialHour = formatTime(shift.initialHour);
+                const formattedFinishHour = formatTime(shift.finishHour);
+
                 return (
-                  <Button
-                    as={motion.div}
+                  // <Button
+                  //   as={motion.div}
+                  //   transition="0.5s linear"
+                  //   cursor={"pointer"}
+                  //   key={shift.id}
+                  //   variant={isSelected(shift.id) ? "outline" : "solid"}
+                  //   colorScheme={isSelected(shift.id) ? "blue" : "gray"}
+                  //   size={"sm"}
+                  //   leftIcon={
+                  //     isSelected(shift.id) ? (
+                  //       <CircleCheckBig size={"14"} />
+                  //     ) : undefined
+                  //   }
+                  //   onClick={() => toggleSelectedShift(shift.id)}
+                  // >
+                  //   {shift.shift} - {formattedInitialHour} até às {formattedFinishHour}
+
+                  // </Button>
+                  <MotionButton
                     transition="0.5s linear"
-                    cursor={"pointer"}
-                    key={shift.id}
+                    cursor="pointer"
                     variant={isSelected(shift.id) ? "outline" : "solid"}
                     colorScheme={isSelected(shift.id) ? "blue" : "gray"}
-                    size={"sm"}
+                    key={shift.id}
+                    size="sm"
                     leftIcon={
                       isSelected(shift.id) ? (
-                        <CircleCheckBig size={"14"} />
+                        <CircleCheckBig size="14" />
                       ) : undefined
                     }
                     onClick={() => toggleSelectedShift(shift.id)}
+                    variants={buttonVariants}
+                    animate={isSelected(shift.id) ? 'checked' : 'unchecked'}
                   >
-                    {shift.shift} - {shift.initialHour} : {shift.finishHour}
-                  </Button>
+                    {shift.shift} - {formattedInitialHour} até às {formattedFinishHour}
+                  </MotionButton>
                 );
               })}
             </Flex>
