@@ -15,21 +15,19 @@ export function Header() {
         borderStyle={"solid"}
         borderColor={"white"}
         align={"center"}
+        justifyContent={"space-between"}
+        gap="1rem"
       >
-        <Flex
-          flex={{ base: 1, md: "auto" }}
-          justify={{ base: "center", md: "start" }}
-        >
-          <Image
+        <Image
             src={"/assets/care-connect-logo.svg"}
             alt="Care Connect Logo"
             width={30}
             height={80}
             quality={100}
           />
-        </Flex>
-
         <HeaderClient />
+
+        
       </Flex>
     </Box>
   );
