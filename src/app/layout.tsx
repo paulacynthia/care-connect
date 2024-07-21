@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/providers/auth-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
@@ -5,12 +6,15 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Care Connect",
+  title: {
+    template: "%s | Care Connect",
+    default: "Care Connect",
+  },
   description:
     "Care Connect é um marketplace inovador dedicado a conectar enfermeiros a oportunidades de trabalho em unidades de saúde.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -18,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <AuthProvider>
+          <Providers>{children}</Providers>
+        </AuthProvider>
       </body>
     </html>
   );
