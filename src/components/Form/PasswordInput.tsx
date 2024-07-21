@@ -18,7 +18,7 @@ export function PasswordInput({ showPassword = false }: PasswordInputProps) {
         label={"Senha:"}
         type={show ? "text" : "password"}
         pr="4.5rem"
-        placeholder="Dever ter no mínimo 8 caracteres"
+        placeholder="Dever ter no mínimo 6 caracteres"
         isRequired
       />
       <InputRightElement width="4.5rem" mt="2rem">
