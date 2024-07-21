@@ -3,15 +3,6 @@
 import {
   Box,
   Button,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Flex,
-  IconButton,
-  Select,
-  useDisclosure,
-  Text,
-  VStack,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -19,11 +10,20 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Select,
+  Text,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { Filter, Search } from "lucide-react";
 import { FormEvent } from "react";
@@ -43,18 +43,25 @@ export function SearchForm() {
 
   return (
     <Box as="form" onSubmit={handleSearch}>
-      <Flex alignItems={"center"} maxWidth={["30rem", "45rem"]} gap="0.5rem">
+      <Flex
+        flexDirection={["column", "row"]}
+        bgColor="red"
+        width="full"
+        alignItems={"center"}
+        gap="0.5rem"
+      >
         <InputGroup size="md" width="full">
           <Input
             type="text"
             name="q"
             borderColor={"gray.200"}
             background={"white"}
-            placeholder="Pesquise sobre os hospitais aqui"
+            placeholder="Pesquisar"
             _placeholder={{ opacity: 1, color: "gray.500" }}
             required
+            maxWidth={"16rem"}
           />
-          <InputRightElement width="3.5rem">
+          <InputRightElement width="4.5rem">
             <IconButton
               type="submit"
               aria-label="Filter"
@@ -68,6 +75,7 @@ export function SearchForm() {
 
         <IconButton
           aria-label="Filter"
+          background={"white"}
           icon={<Filter color="#184796" size={"1rem"} />}
           onClick={onOpen}
           variant={"outline"}
