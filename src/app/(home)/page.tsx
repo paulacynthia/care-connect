@@ -1,4 +1,5 @@
 import { HospitalJobCard } from "@/components/HospitalJobCard";
+import { SearchForm } from "@/components/SearchForm";
 import { api } from "@/data/api";
 import { HospitalJob } from "@/data/types/hospitalJob";
 import { Flex } from "@chakra-ui/react";
@@ -23,7 +24,8 @@ export default async function Home() {
   const hospitalJobs = await getHospitalJobs();
 
   return (
-    <Flex flexDirection={"column"}>
+    <Flex flexDirection={"column"} gap="0.5rem">
+      <SearchForm />
       <Flex gap="1rem" flexWrap={"wrap"} justifyContent={"center"}>
         {hospitalJobs.map((hospitalJob) => (
           <HospitalJobCard key={hospitalJob.id} hospitalJob={hospitalJob} />

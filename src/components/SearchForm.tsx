@@ -2,30 +2,14 @@
 
 import {
   Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  Text,
-  useDisclosure,
-  VStack,
+  useDisclosure
 } from "@chakra-ui/react";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { FormEvent } from "react";
 
 export function SearchForm() {
@@ -42,15 +26,15 @@ export function SearchForm() {
   }
 
   return (
-    <Box as="form" onSubmit={handleSearch}>
+    <Box as="form" onSubmit={handleSearch} display={"flex"} justifyContent={"center"}>
       <Flex
         flexDirection={["column", "row"]}
-        bgColor="red"
         width="full"
+        maxWidth="45rem"
         alignItems={"center"}
         gap="0.5rem"
       >
-        <InputGroup size="md" width="full">
+        <InputGroup size="md" width="full" gap="0.5rem">
           <Input
             type="text"
             name="q"
@@ -59,21 +43,26 @@ export function SearchForm() {
             placeholder="Pesquisar"
             _placeholder={{ opacity: 1, color: "gray.500" }}
             required
-            maxWidth={"16rem"}
+            maxWidth={"full"}
           />
-          <InputRightElement width="4.5rem">
+          <InputRightElement position={"relative"}>
             <IconButton
               type="submit"
               aria-label="Filter"
-              h="1.75rem"
+              h="full"
+              w="full"
               size="sm"
               icon={<Search color="#184796" size={"1rem"} />}
-              variant={"ghost"}
+              color={"gray.200"}
+              background={"white"}
+              border={"1px solid"}
+              position={"relative"}
+              _hover={{}}
             />
           </InputRightElement>
         </InputGroup>
 
-        <IconButton
+        {/* <IconButton
           aria-label="Filter"
           background={"white"}
           icon={<Filter color="#184796" size={"1rem"} />}
@@ -155,7 +144,7 @@ export function SearchForm() {
               </Button>
             </DrawerFooter>
           </DrawerContent>
-        </Drawer>
+        </Drawer> */}
       </Flex>
     </Box>
   );
