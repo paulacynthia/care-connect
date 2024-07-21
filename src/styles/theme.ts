@@ -10,7 +10,7 @@ export const theme = extendTheme({
     },
     blueX: {
       "500": "#4163F6",
-      "900": "#184796"
+      "900": "#184796",
     },
     yellowX: {
       "400": "#FCC02B",
@@ -19,9 +19,32 @@ export const theme = extendTheme({
       "500": "#AE6C52",
     },
     orangeX: {
-      "600": "#FD4701"
-    }
+      "600": "#FD4701",
+    },
   },
+  components: {
+    Button: {
+      variants: {
+        custom: {
+          bg: "blueX.500", 
+          color: "white",
+          _hover: {
+            bg: "blueX.900",
+            color: "white",
+          },
+        },
+        outline: {
+          borderColor: "blueX.500",
+          color: "blueX.500",
+          _hover: {
+            borderColor: "blueX.500",
+            color: "blueX.500",
+          },
+        },
+      },
+    },
+  },
+
   styles: {
     global: {
       body: {
