@@ -35,15 +35,31 @@ export async function GET(req: NextRequest) {
     };
 
     const whereInitialHour = searchParams.get("initialHour") && {
-      initialHour: {
-        gte: Number(searchParams.get("initialHour")),
-      },
+      availableShifts: {
+        some: {
+          OR: [
+            {
+              initialHour: {
+                gte: Number(searchParams.get("initialHour")),
+              },
+            }
+          ],
+        }
+      }
     };
 
     const whereFinishHour = searchParams.get("finishHour") && {
-      finishHour: {
-        lte: Number(searchParams.get("finishHour")),
-      },
+      availableShifts: {
+        some: {
+          OR: [
+            {
+              finishHour: {
+                lte: Number(searchParams.get("finishHour")),
+              },
+            }
+          ],
+        }
+      }
     };
 
     const orderByParam = searchParams.get("orderBy") || "";
