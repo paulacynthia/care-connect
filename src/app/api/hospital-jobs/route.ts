@@ -1,14 +1,94 @@
 import prisma from "@/lib/db";
-import { NextApiRequest } from "next";
 import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+interface params {
+  q: string;
+  minimumPayment: number;
+  minimumScore: number;
+  initialHour: number;
+  finishHour: number;
+  sortBy: string;
+  sortOrder: "" | "asc" | "desc";
+}
+
+export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req });   
+    const token = await getToken({ req });
     const userId = Number(token?.sub);
+    console.log("userId", userId);
+
+    const { searchParams } = req.nextUrl;
+    const query = searchParams.get("q") || "";
+
+    const wherePayment = searchParams.get("minimumPayment") && {
+      payment: {
+        gte: Number(searchParams.get("minimumPayment")),
+      },
+    };
+
+    const whereScore = searchParams.get("minimumScore") && {
+      hospital: {
+        score: {
+          gte: Number(searchParams.get("minimumScore")),
+        },
+      },
+    };
+
+    const whereInitialHour = searchParams.get("initialHour") && {
+      initialHour: {
+        gte: Number(searchParams.get("initialHour")),
+      },
+    };
+
+    const whereFinishHour = searchParams.get("finishHour") && {
+      finishHour: {
+        lte: Number(searchParams.get("finishHour")),
+      },
+    };
+
+    const sortByParam = searchParams.get("sortBy") || "";
+    const orderBy = searchParams.get("sortBy") && {
+      [sortByParam]: searchParams.get("sortOrder") || "desc",
+    };
+
+    const dbWhere = {
+      ...wherePayment,
+      ...whereScore,
+      ...whereInitialHour,
+      ...whereFinishHour,
+    };
 
     const data = await prisma.hospitalJob.findMany({
+      where: {
+        ...(query && {
+          OR: [
+            {
+              title: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+            {
+              hospital: {
+                name: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              hospital: {
+                location: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            },
+          ],
+        }),
+        ...dbWhere,
+      },
       include: {
         hospital: true,
         availableShifts: {
@@ -27,9 +107,11 @@ export async function GET(req: NextApiRequest) {
           },
         },
       },
+      orderBy: {
+        ...orderBy,
+      },
     });
 
-    console.log(data[0]);
     return Response.json({ data });
   } catch (err) {
     return NextResponse.json(

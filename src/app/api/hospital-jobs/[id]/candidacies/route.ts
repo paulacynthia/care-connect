@@ -13,7 +13,7 @@ interface ApplyCandidacies
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const body: ApplyCandidacies = await request.json();
@@ -22,30 +22,25 @@ export async function POST(
       req: request,
     });
     const userId = Number(token?.sub);
-    console.log(userId);
-    console.log(params.id);
-    console.log(body.shiftIds);
 
     const currentCandidacies = await prisma.userShiftCandidacy.findMany({
       where: {
-        userId,
+        userId: userId,
         shift: {
-          is: {
-            hospitalJobId: params.id,
+          hospitalJobShift: {
+            id: +params.id,
           },
         },
       },
-      select: {
-        id: true,
-        shiftId: true,
+      include: {
+        shift: {
+          include: {
+            hospitalJobShift: true,
+          },
+        },
       },
     });
 
-    console.log("currentCandidacies", currentCandidacies);
-
-    // 1 2 5
-    // 1 3 4 5
-    // 2
     const createData = body.shiftIds
       .filter((s) => !currentCandidacies.some((c) => c.shiftId === s))
       .map((shiftId) => ({
