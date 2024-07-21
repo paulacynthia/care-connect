@@ -8,9 +8,15 @@ import { PasswordInput } from "./Form/PasswordInput";
 
 const schema = yup.object().shape({
   name: yup.string().required("Campo Obrigatório"),
-  email: yup.string().email("Campo de email inválido").required("Campo Obrigatório"),
-  password: yup.string().min(6, "O número mínimo de caracteres deve ser 6").required("Campo Obrigatório"),
-})
+  email: yup
+    .string()
+    .email("Campo de email inválido")
+    .required("Campo Obrigatório"),
+  password: yup
+    .string()
+    .min(6, "O número mínimo de caracteres deve ser 6")
+    .required("Campo Obrigatório"),
+});
 export function SignUpForm() {
   const toast = useToast();
   const router = useRouter();
@@ -42,9 +48,8 @@ export function SignUpForm() {
           status: "error",
           duration: 5000,
           isClosable: true,
-        })
-      }
-      else {
+        });
+      } else {
         toast({
           position: "top",
           title: "Erro ao cadastrar",
@@ -52,7 +57,7 @@ export function SignUpForm() {
           status: "error",
           duration: 5000,
           isClosable: true,
-        })
+        });
       }
     }
   }
