@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Avatar,
   Button,
   Collapse,
   Flex,
@@ -20,16 +21,24 @@ export function HeaderClient() {
   return (
     <>
       <Flex display={{ base: "none", md: "flex" }} align="center">
-        <Stack direction="row" spacing={6}>
+        <Stack direction="row">
           {session ? (
-            <Button
-              onClick={() => signOut()}
-              variant="link"
-              fontSize="sm"
-              fontWeight={400}
-            >
-              Sair
-            </Button>
+            <Flex>
+              <Button
+                onClick={() => signOut()}
+                variant="link"
+                fontSize="sm"
+                fontWeight={400}
+              >
+                Sair
+              </Button>
+              <Avatar
+                name={session.user?.name || "Eu"}
+                size={"sm"}
+                bgColor="blueX.500"
+                color="white"
+              />
+            </Flex>
           ) : (
             <Button
               onClick={() => signIn()}
@@ -43,22 +52,27 @@ export function HeaderClient() {
         </Stack>
       </Flex>
 
+    <Flex display={{ base: "flex", md: "none" }} direction="row-reverse" alignItems="center" >
+      {session && (<Avatar
+                name={session.user?.name || "Eu"}
+                size={"sm"}
+                bgColor="blueX.500"
+                color="white"/>)}
       <IconButton
         onClick={onToggle}
+        justifyContent="center"
         icon={isOpen ? <X /> : <Menu />}
         variant={"ghost"}
         aria-label={"Toggle Navigation"}
-        display={{ md: "none" }}
       />
-
+      
+                
       <Collapse in={isOpen} animateOpacity>
         <Flex
           width="full"
           direction="column"
           alignItems="flex-start"
           bg="white"
-          p={4}
-          display={{ md: "none" }}
           gap="1rem"
         >
           {session ? (
@@ -82,6 +96,8 @@ export function HeaderClient() {
           )}
         </Flex>
       </Collapse>
+      </Flex>
+
     </>
   );
 }
