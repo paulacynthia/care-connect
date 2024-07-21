@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Stack } from "@chakra-ui/react";
+import { Button, Stack, useToast } from "@chakra-ui/react";
 import { LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ import { PasswordInput } from "./Form/PasswordInput";
 
 export function SignInForm() {
   const router = useRouter();
-
+  const toast = useToast();
   async function handleLoginSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -24,6 +24,15 @@ export function SignInForm() {
     if (!response?.error) {
       router.push("/");
       router.refresh();
+    } else {
+      toast({
+        position: "top",
+        title: "Erro ao fazer login",
+        description: "Verifique suas credenciais e tente novamente.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      })
     }
   }
 
