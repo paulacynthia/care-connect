@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String
+  password String
+  picture  String?
+
+  UserShiftCandidacy UserShiftCandidacy[]
+
+  @@map("users")
+}
+
+model Hospital {
+  id       Int     @id @default(autoincrement())
+  name     String
+  location String
+  score    Float   @default(0)
+  picture  String?
+
+  HospitalJob HospitalJob[]
+
+  @@map("hospitals")
+}
+
+model HospitalJob {
+  id           Int      @id @default(autoincrement())
+  expertise    String
+  title        String
+  description  String
+  payment      Int
+  requirements String
+  benefits     String
+  createdAt    DateTime @default(now())
+
+  hospitalId Int
+
+  hospital        Hospital @relation(fields: [hospitalId], references: [id])
+  availableShifts Shift[]
+
+  @@map("hospital_jobs")
+}
+
+model Shift {
+  id    Int    @id @default(autoincrement())
+  shift String
+
+  initialHour Int
+  finishHour  Int
+
+  hospitalJobId Int
+
+  hospitalJobShifts  HospitalJob          @relation(fields: [hospitalJobId], references: [id])
+  userShiftCandidacy UserShiftCandidacy[]
+
+  @@map("shifts")
+}
+
+model UserShiftCandidacy {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId  Int
+  shiftId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  shift Shift @relation(fields: [shiftId], references: [id])
+
+  @@map("user_shift_candidacies")
+}
