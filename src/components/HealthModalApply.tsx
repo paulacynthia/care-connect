@@ -64,13 +64,15 @@ export function HospitalJobModalApply({
   isOpenModalApply,
   onCloseModalApply,
 }: HospitalJobModalApplyProps) {
+  const toast = useToast();
+  const router = useRouter();
+
   const selectShiftsIds = hospitalJob.availableShifts
     .filter((s) => s.userShiftCandidacy && s.userShiftCandidacy.length > 0)
     .map((shift) => shift.id);
 
   const [selectedShifts, setSelectedShifts] = useState(selectShiftsIds);
 
-  const toast = useToast();
   const { data: session } = useSession();
 
   function toggleSelectedShift(shiftId: number) {
@@ -88,6 +90,10 @@ export function HospitalJobModalApply({
   }
 
   async function handleApply() {
+    if (!session) {
+      router.push("/signin");
+    }
+
     const response = await post(
       `/hospital-jobs/${hospitalJob.id}/candidacies`,
       {

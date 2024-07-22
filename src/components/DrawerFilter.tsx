@@ -118,8 +118,7 @@ export function DrawerFilter({ isOpen, onClose }: DrawerFilterProps) {
                       Campo
                     </option>
                     <option value="payment">Remuneração</option>
-                    <option value="grade">Nota</option>
-                    <option value="date">Data de postagem</option>
+                    <option value="createdAt">Data de postagem</option>
                   </Select>
                   <Select
                     name="orderType"
