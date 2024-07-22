@@ -1,5 +1,6 @@
+import { env } from "@/env";
 export function api(path: string, headers?: Headers, init?: RequestInit) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = env.NEXT_PUBLIC_API_URL;
   const apiPrefix = "/api";
 
   const url = new URL(apiPrefix.concat(path), baseUrl);
@@ -9,7 +10,7 @@ export function api(path: string, headers?: Headers, init?: RequestInit) {
 }
 
 export function post(path: string, jsonBody: object) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = env.NEXT_PUBLIC_API_URL;
   const apiPrefix = "/api";
 
   const url = new URL(apiPrefix.concat(path), baseUrl);
